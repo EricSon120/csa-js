@@ -1,0 +1,44 @@
+{
+    "id": "1",
+    "page": 3,
+    "max_page": 10,
+    "title": "Question 3",
+    "question": [
+      {
+        "question_header": "Suppose you have the following code segment",
+        "question_main": "What must be added to line 3 in order for the intended division to work correctly?",
+        "question_code": {
+          "code": "int a = 5; //line 1 \n int b = 2; //line 2 \n double c = b/a; //line 3 \n System.out.println(c);"
+        }
+      }
+    ],
+    "answer_choices": [
+      {
+        "key": "a)",
+        "value": "double c= double(b/a);"
+        
+      },
+      {
+        "key": "b)",
+        "value": "double c= (double)b/a;"
+        }
+      ,
+      {
+        "key": "c)",
+        "value": "double c= (int)b/a;"
+        }
+      ,
+      {
+        "key": "d)",
+        "value": "The line works as intended"
+        }
+      
+    ],
+    "feedback": [
+      {
+        "correct_answer": "b",
+        "explanation": "Explanation: \n A is incorrect because the parenthesis indicate that b/a will be evaluated first. Since b and a are both integers, the answer will also be an integer and cast to a double too late. C is incorrect because it is casted to an int. D is incorrect because in line 3, b and a are both integers and need to be casted to a double. B correctly casts b to a double, causing the final answer to be a double too."
+      }
+    ]
+  }
+

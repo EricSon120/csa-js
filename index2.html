@@ -1,0 +1,87 @@
+<html>
+  <head>
+    <style>
+      .lesson_heading {
+        font-weight: bold;
+        font-size: 30px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .subheading {
+        font-weight: bold;
+        margin-bottom: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        text-decoration: underline;
+      }
+
+      .button {
+        background-color: aquamarine;
+        font-family: 'Times New Roman', Times, serif;
+        font-weight: bold;
+      }
+
+      .explanation {
+        font-size: 15px;
+        margin-bottom: 30px;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+    </style>
+  </head>
+
+  <body>
+    <form action="">
+      <div id="text-container" class="text-container">
+        <div class="lesson_heading" id="lesson_id"></div>
+        <div class="subheading" id="subheading_1"></div>
+        <div class="explanation" id="explanation_2"></div>
+        <div class="explanation" id="explanation_3"></div>
+        <div class="explanation" id="explanation_4"></div>
+        <div class="subheading" id="subheading_2"></div>
+        <div class="explanation" id="explanation_1"></div>
+        <button type="button" class="button" id="prevLesson">Previous Lesson</button>
+        <button type="button" class="button" id="nextLesson">Next Lesson</button>
+      </div>
+    </form>
+    <script>
+      const lessonIDElement = document.getElementById('lesson_id');
+      const subheading_1_Element = document.getElementById('subheading_1');
+      const subheading_2_Element = document.getElementById('subheading_2');
+      const explanation_1_Element = document.getElementById('explanation_1');
+      const explanation_2_Element = document.getElementById('explanation_2');
+      const explanation_3_Element = document.getElementById('explanation_3');
+      const explanation_4_Element = document.getElementById('explanation_4');
+      var currentQuestion = 1;
+
+      const loadQuestion = (currentQuestion) => {
+        console.log = currentQuestion;
+
+        const LESSON_URL = 'http://localhost:3000/posts/' + currentQuestion;
+        fetch(LESSON_URL)
+          .then(response => response.json())
+          .then(responseJson => {
+            lessonIDElement.innerText = responseJson.lesson_id;
+            subheading_1_Element.innerText = responseJson.subheading[0].subheading_1;
+            explanation_2_Element.innerText = responseJson.explanation[0].explanation_2;
+            explanation_3_Element.innerText = responseJson.explanation[0].explanation_3;
+            explanation_4_Element.innerText = responseJson.explanation[0].explanation_4;
+            subheading_2_Element.innerText = responseJson.subheading[0].subheading_2;
+            explanation_1_Element.innerText = responseJson.explanation[0].explanation_1;
+          });
+      };
+
+      loadQuestion(currentQuestion);
+      nextLesson.addEventListener('click', () => {
+        currentQuestion++;
+        loadQuestion(currentQuestion);
+      });
+      prevLesson.addEventListener('click', () => {
+        currentQuestion--;
+        loadQuestion(currentQuestion);
+      });
+    </script>
+  </body>
+</html>

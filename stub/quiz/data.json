@@ -1,0 +1,492 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "page": 3,
+      "max_page": 10,
+      "title": "Question 1",
+      "question": [
+        {
+          "question_header": "Suppose you have the following code segment",
+          "question_main": "What must be added to line 3 in order for the intended division to work correctly?",
+          "question_code": {
+            "code": "int a = 5; //line 1 \n int b = 2; //line 2 \n double c = b/a; //line 3 \n System.out.println(c);"
+          }
+        }
+      ],
+      "answer_choices": [
+        {
+          "choice": {
+            "key": "a)",
+            "value": "double c= double(b/a);"
+          }
+        },
+        {
+          "choice": {
+            "key": "b)",
+            "value": "double c= (double)b/a;"
+          }
+        },
+        {
+          "choice": {
+            "key": "c)",
+            "value": "double c= (int)b/a;"
+          }
+        },
+        {
+          "choice": {
+            "key": "d)",
+            "value": "The line works as intended"
+          }
+        }
+      ],
+      "feedback": [
+        {
+          "correct_answer": "b",
+          "explanation": "Explanation: \n A is incorrect because the parenthesis indicate that b/a will be evaluated first. Since b and a are both integers, the answer will also be an integer and cast to a double too late. C is incorrect because it is casted to an int. D is incorrect because in line 3, b and a are both integers and need to be casted to a double. B correctly casts b to a double, causing the final answer to be a double too."
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "page": 4,
+      "max_page": 10,
+      "title": "Question 2",
+      "question": [
+        {
+          "question_header": "Which of the following will evaluate to the value of 10?",
+          "question_main": "",
+          "question_code": {
+            "code": "I) 3 + 21/2\nII) 8 % 20 + 2\nIII) 5 * 8 % 6"
+          }
+        }
+      ],
+      "answer_choices": [
+        {
+          "choice": {
+            "key": "a)",
+            "value": "I only"
+          }
+        },
+        {
+          "choice": {
+            "key": "b)",
+            "value": "I and III only"
+          }
+        },
+        {
+          "choice": {
+            "key": "c)",
+            "value": "II only"
+          }
+        },
+        {
+          "choice": {
+            "key": "d)",
+            "value": "I, II, and III"
+          }
+        }
+      ],
+      "feedback": [
+        {
+          "correct_answer": "C",
+          "you_chose": "D",
+          "explanation": "Explanation:\nI is incorrect because the division will be evaluated first. 21/2 will evaluate to 10. Next, you would have to add 3, causing the answer to be 13. II is correct because the modulo is evaluated. 8 % 20 will evaluate to 8 because 20 does not divide into 8, and when you add 8 by 2, the answer would be 10. III is incorrect since 5 * 8 is evaluated to 40, and 40 % 6 would be 4."
+        }
+      ],
+      "accuracy": "Your Score: correct/incorrect%"
+    },
+    {
+      "id": "3",
+      "page": 5,
+      "max_page": 10,
+      "title": "Question 3",
+      "question": [
+          {
+              "question_header": "What is output by the following code?",
+              "question_main": "",
+              "question_code": {
+                  "code": "int val = -2; \n x++; \n x--; \n x++; \n x--; \n x++; \n x--; \n System.out.println(x);"
+              }
+          }
+      ],
+      "answer_choices": [
+          {
+              "choice": {
+                  "key": "a)",
+                  "value": "3"
+              }
+          },
+          {
+              "choice": {
+                  "key": "b)",
+                  "value": "2"
+              }
+          },
+          {
+              "choice": {
+                  "key": "c)",
+                  "value": "4"
+              }
+          },
+          {
+              "choice": {
+                  "key": "d)",
+                  "value": "1"
+              }
+          }
+      ]
+  },
+  {
+    "id": "4",
+    "page": 6,
+    "max_page": 10,
+    "title": "Question 4",
+    "question": [
+      {
+        "question_header": "Suppose you have the following code segment",
+        "question_main": "What is the output of the program?",
+        "question_code": {
+          "code": "int a= 5; \n int b = a; \n b += 2; \n System.out.println(a);"
+        }
+      }
+    ],
+    "answer_choices": [
+      {
+        "choice": {
+          "key": "a)",
+          "value": "5"
+        }
+      },
+      {
+        "choice": {
+          "key": "b)",
+          "value": "7"
+        }
+      },
+      {
+        "choice": {
+          "key": "c)",
+          "value": "2"
+        }
+      },
+      {
+        "choice": {
+          "key": "d)",
+          "value": "9"
+        }
+      }
+    ],
+    "feedback": [
+      {
+        "correct_answer": "C",
+        "you_chose": "D",
+        "explanation": "Explanation:\nI is incorrect because the division will be evaluated first. 21/2 will evaluate to 10. Next, you would have to add 3, causing the answer to be 13. II is correct because the modulo is evaluated. 8 % 20 will evaluate to 8 because 20 does not divide into 8, and when you add 8 by 2, the answer would be 10. III is incorrect since 5 * 8 is evaluated to 40, and 40 % 6 would be 4."
+      }
+    ],
+    "accuracy": "Your Score: correct/incorrect%"
+  },
+  {
+    "id": "5",
+    "page": 7,
+    "max_page": 10,
+    "title": "Question 5",
+    "question": [
+      {
+        "question_header": "Which of the following is a legal variable name in Java?",
+        "question_main": "",
+        "question_code": {
+          "code": "I) int 3num \n II) int $money \n III) int a"
+        }
+      }
+    ],
+    "answer_choices": [
+      {
+        "choice": {
+          "key": "a)",
+          "value": "I only"
+        }
+      },
+      {
+        "choice": {
+          "key": "b)",
+          "value": "I and II only"
+        }
+      },
+      {
+        "choice": {
+          "key": "c)",
+          "value": "III only"
+        }
+      },
+      {
+        "choice": {
+          "key": "d)",
+          "value": "II and III"
+        }
+      }
+    ],
+    "feedback": [
+      {
+        "correct_answer": "C",
+        "you_chose": "D",
+        "explanation": "Explanation:\nI is incorrect because the division will be evaluated first. 21/2 will evaluate to 10. Next, you would have to add 3, causing the answer to be 13. II is correct because the modulo is evaluated. 8 % 20 will evaluate to 8 because 20 does not divide into 8, and when you add 8 by 2, the answer would be 10. III is incorrect since 5 * 8 is evaluated to 40, and 40 % 6 would be 4."
+      }
+    ],
+    "accuracy": "Your Score: correct/incorrect%"
+  },
+  {
+    "id": "6",
+    "page": 8,
+    "max_page": 10,
+    "title": "Question 6",
+    "question": [
+      {
+        "question_header": "Which of the following are primitive data types? ",
+        "question_main": "",
+        "question_code": {
+          "code": "I) int \n II) String \n III) boolean"
+        }
+      }
+    ],
+    "answer_choices": [
+      {
+        "choice": {
+          "key": "a)",
+          "value": "I only"
+        }
+      },
+      {
+        "choice": {
+          "key": "b)",
+          "value": "I and III only"
+        }
+      },
+      {
+        "choice": {
+          "key": "c)",
+          "value": "II only"
+        }
+      },
+      {
+        "choice": {
+          "key": "d)",
+          "value": "I, II, and III"
+        }
+      }
+    ],
+    "feedback": [
+      {
+        "correct_answer": "C",
+        "you_chose": "D",
+        "explanation": "Explanation:\nI is incorrect because the division will be evaluated first. 21/2 will evaluate to 10. Next, you would have to add 3, causing the answer to be 13. II is correct because the modulo is evaluated. 8 % 20 will evaluate to 8 because 20 does not divide into 8, and when you add 8 by 2, the answer would be 10. III is incorrect since 5 * 8 is evaluated to 40, and 40 % 6 would be 4."
+      }
+    ],
+    "accuracy": "Your Score: correct/incorrect%"
+  },
+  {
+    "id": "7",
+    "page": 9,
+    "max_page": 10,
+    "title": "Question 7",
+    "question": [
+      {
+        "question_header": "A programmer intends to have the following output to the screen. \n Sir, this is a Wendy’s!",
+        "question_main": "Which of the following segment(s) produces the correct output?",
+        "question_code": {
+          "code": "I) System.out.print(“Sir, “); \n System.out.println(“this is “); \n System.out.print(“a Wendy’s!); \n \n II) System.out.print(“Sir, “); \n System.out.println();\n System.out.print(“this is “);\n System.out.println(“a Wendy’s!”); \n \n III) System.out.println(“Sir, “);\n System.out.print(“this is “);\n System.out.println(“a Wendy’s!”;"
+        }
+      }
+    ],
+    "answer_choices": [
+      {
+        "choice": {
+          "key": "a)",
+          "value": "I only"
+        }
+      },
+      {
+        "choice": {
+          "key": "b)",
+          "value": "I and III only"
+        }
+      },
+      {
+        "choice": {
+          "key": "c)",
+          "value": "II only"
+        }
+      },
+      {
+        "choice": {
+          "key": "d)",
+          "value": "I, II, and III"
+        }
+      }
+    ],
+    "feedback": [
+      {
+        "correct_answer": "C",
+        "you_chose": "D",
+        "explanation": "Explanation:\nI is incorrect because the division will be evaluated first. 21/2 will evaluate to 10. Next, you would have to add 3, causing the answer to be 13. II is correct because the modulo is evaluated. 8 % 20 will evaluate to 8 because 20 does not divide into 8, and when you add 8 by 2, the answer would be 10. III is incorrect since 5 * 8 is evaluated to 40, and 40 % 6 would be 4."
+      }
+    ],
+    "accuracy": "Your Score: correct/incorrect%"
+  },
+  {
+    "id": "8",
+    "page": 10,
+    "max_page": 10,
+    "title": "Question 8",
+    "question": [
+      {
+        "question_header": "What is the output of the following statement?",
+        "question_main": "",
+        "question_code": {
+          "code": "int a = 1, b = 2, c =3 , d \n d = 5- b * c % 5+ 3 / (a+5)"
+        }
+      }
+    ],
+    "answer_choices": [
+      {
+        "choice": {
+          "key": "a)",
+          "value": "0"
+        }
+      },
+      {
+        "choice": {
+          "key": "b)",
+          "value": "1"
+        }
+      },
+      {
+        "choice": {
+          "key": "c)",
+          "value": "1.167"
+        }
+      },
+      {
+        "choice": {
+          "key": "d)",
+          "value": "none of the above"
+        }
+      }
+    ],
+    "feedback": [
+      {
+        "correct_answer": "C",
+        "you_chose": "D",
+        "explanation": "Explanation:\nI is incorrect because the division will be evaluated first. 21/2 will evaluate to 10. Next, you would have to add 3, causing the answer to be 13. II is correct because the modulo is evaluated. 8 % 20 will evaluate to 8 because 20 does not divide into 8, and when you add 8 by 2, the answer would be 10. III is incorrect since 5 * 8 is evaluated to 40, and 40 % 6 would be 4."
+      }
+    ],
+    "accuracy": "Your Score: correct/incorrect%"
+  },
+  {
+    "id": "9",
+    "page": 11,
+    "max_page": 10,
+    "title": "Question 9",
+    "question": [
+      {
+        "question_header": "Which of the following will evaluate to the value of 10?",
+        "question_main": "",
+        "question_code": {
+          "code": "I) 3 + 21/2\nII) 8 % 20 + 2\nIII) 5 * 8 % 6"
+        }
+      }
+    ],
+    "answer_choices": [
+      {
+        "choice": {
+          "key": "a)",
+          "value": "I only"
+        }
+      },
+      {
+        "choice": {
+          "key": "b)",
+          "value": "I and III only"
+        }
+      },
+      {
+        "choice": {
+          "key": "c)",
+          "value": "II only"
+        }
+      },
+      {
+        "choice": {
+          "key": "d)",
+          "value": "I, II, and III"
+        }
+      }
+    ],
+    "feedback": [
+      {
+        "correct_answer": "C",
+        "you_chose": "D",
+        "explanation": "Explanation:\nI is incorrect because the division will be evaluated first. 21/2 will evaluate to 10. Next, you would have to add 3, causing the answer to be 13. II is correct because the modulo is evaluated. 8 % 20 will evaluate to 8 because 20 does not divide into 8, and when you add 8 by 2, the answer would be 10. III is incorrect since 5 * 8 is evaluated to 40, and 40 % 6 would be 4."
+      }
+    ],
+    "accuracy": "Your Score: correct/incorrect%"
+  },
+  {
+    "id": "10",
+    "page": 12,
+    "max_page": 10,
+    "title": "Question 10",
+    "question": [
+      {
+        "question_header": "Which of the following will evaluate to the value of 10?",
+        "question_main": "",
+        "question_code": {
+          "code": "I) 3 + 21/2\nII) 8 % 20 + 2\nIII) 5 * 8 % 6"
+        }
+      }
+    ],
+    "answer_choices": [
+      {
+        "choice": {
+          "key": "a)",
+          "value": "I only"
+        }
+      },
+      {
+        "choice": {
+          "key": "b)",
+          "value": "I and III only"
+        }
+      },
+      {
+        "choice": {
+          "key": "c)",
+          "value": "II only"
+        }
+      },
+      {
+        "choice": {
+          "key": "d)",
+          "value": "I, II, and III"
+        }
+      }
+    ],
+    "feedback": [
+      {
+        "correct_answer": "C",
+        "you_chose": "D",
+        "explanation": "Explanation:\nI is incorrect because the division will be evaluated first. 21/2 will evaluate to 10. Next, you would have to add 3, causing the answer to be 13. II is correct because the modulo is evaluated. 8 % 20 will evaluate to 8 because 20 does not divide into 8, and when you add 8 by 2, the answer would be 10. III is incorrect since 5 * 8 is evaluated to 40, and 40 % 6 would be 4."
+      }
+    ],
+    "accuracy": "Your Score: correct/incorrect%"
+  }
+  
+    
+  
+  
+  ],
+  "comments": [
+    { "id": 1, "body": "some comment", "postId": 1 }
+  ],
+  "profile": { "name": "typicode" }
+}

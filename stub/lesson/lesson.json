@@ -1,0 +1,29 @@
+{
+    "id": 1,
+    "uuid": 12311231321,
+    "lesson_name": "Output/numeric operators with Java",
+    "lesson_id": "Lesson 3",
+    "subheading": [
+      {
+        "subheading_1": "Output",
+        "subheading_2": "Mathematical operators"
+      }
+    ],
+    "images_and_diagrams": [
+      {
+        "image_1": "",
+        "image_2": "",
+        "digram_1": "",
+        "video_1": ""
+      }
+    ],
+    "explanation": [
+      {
+        "explanation_1": "In math, we would always use operations such as addition and multiplication. In Java, this is very similar because Java uses the mathematical operators + for addition, - for subtraction, * for multiplication, % for mod, and / for division. A mod is an operation similar to division in which the REMAINDER of the answer is returned. For example, 8 % 3 will return 2, the remainder. And 6 % 3 will return 0 since there is no remainder. == is used to test if the value on the right is equal to the value on the left and != will test if the values are equal or not. Note that you will not use the == or != when dealing with strings.",
+        "explanation_2": "In order to print what will be outputted to the terminal, one must use the System.out.print() function in order to print out text or data to the console. You can put strings, variables, methods, and practically anything you want to print",
+        "explanation_3": "In this example, the user is printing “Hello, world!” out to the console and does not append a newline at the end. This means that everything will be displayed on the same line. However, the user can also use System.out.println() which will automatically append a new line and cause the next output to appear on a new line.",
+        "explanation_4": "In this example, “Hello, world!” will first be printed but the println will cause the next output, “This is a new line. “ to appear on the next line."
+      }
+    ]
+  }
+  
