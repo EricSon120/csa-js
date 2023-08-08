@@ -143,13 +143,18 @@ submitBtn.addEventListener('click', () => {
             selectedAnswer = radioButtons.value;
         }
     }
+    if (selectedAnswer === '') {
+        alert("Please select an answer before submitting.");
+        return;
+
+    }
 
     const correctAnswer = questionArray[currentQuestion].feedback[0].correct_answer;
     console.log(correctAnswer);
     console.log(selectedAnswer);
     displayExplanation(selectedAnswer, correctAnswer);
-    });
             });
+        });
     }
 
 
