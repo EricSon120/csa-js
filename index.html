@@ -1,221 +1,32 @@
 <html>
 <head>
-    <title>Document</title>
+    <title>CSA QUIZ</title>
  
      <!-- external css file -->
-     <!-- <link rel="stylesheet" href="css/main.css"> -->
+     <link rel="stylesheet" href="css/style.css"> 
 
      <!-- internal css -->
      <style>
-        .button {
-            background-color: green;
-            border-radius: 5px;
-            border-style: none;
-            padding: 4px;
-            font-family: Arial, Helvetica, sans-serif;
-            font-weight: bold;
-        }
-        .question-container {
-            margin: 120px;
-            display: none;
-        }
-        .question-num {
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-            padding: 10px;
-            margin: 5px;
-            border: 1px;
-            border-radius: 5px;
-            border-color: green;
-            border-style: solid;
-        }
-        .main-question {
-            font-family: Arial, Helvetica, sans-serif;
-            padding: 15px;
-        }
-        .question-code {
-            font-family: 'Courier New', Courier, monospace;
-            margin: 5px;
-            padding: 10px 10px 15px 15px;
-            background-color: rgb(190, 193, 195);
-            border-radius: 10px;
-        }
-        .sub-question {
-            font-family: Arial, Helvetica, sans-serif;
-            padding: 10px;
-        }
-        .choices {
-            font-family: 'Courier New', Courier, monospace;
-            padding: 10px 15px;
-        }
-        .choice {
-            margin: 5px;
-        }
-     </style>
- 
-     <!-- external javascript file -->
-     <!-- <script src="js/main.js"></script> -->
-     
+     </style> 
 </head>
-  <body>
+<body>
     <form action="">
-    <div id="question-container" class="question-container">
-      <div id="question-num" class="question-num"></div>
-      <div id="main-question" class="main-question"></div>
-      <div id="question-code" class="question-code"></div>
-      <div id="sub-question" class="sub-question"></div>
-      <div id="choices" class="choices"></div>
-      <div id="explanation" class="explanation"></div>
-
-      
-    </div>
-    <button type="button" class="button" id="backBtn">Back</button>
-    <button type="button" class="button" id="nextBtn"> Next</button>
-    <button type="button" class="button" id="submitBtn">Submit</button>
+        <div id="question-container" class="question-container">
+            <div id="question-num" class="question-num"></div>
+            <div id="main-question" class="main-question"></div>
+            <div id="question-code" class="question-code"></div>
+            <div id="sub-question" class="sub-question"></div>
+            <div id="choices" class="choices"></div>
+            <div id="explanation" class="explanation"></div>
+        </div>
+        <div class="navigation-button">
+            <button type="button" class="button" id="backBtn">Back</button>
+            <button type="button" class="button" id="nextBtn"> Next</button>
+            <button type="button" class="button" id="submitBtn">Submit</button>
+        </div>
 
     </form>
-  
-  <script>
-    const questioncontainerElement = document.getElementById('question-container');
-    const questionNumElement = document.getElementById('question-num');
-    const mainQuestionElement = document.getElementById('main-question');
-    const questionCodeElement = document.getElementById('question-code');
-    const subQuestionElement = document.getElementById('sub-question');
-    const choicesElement = document.getElementById('choices');
-    const submitBtn = document.getElementById('submitBtn'); 
-    const backBtn = document.getElementById('backBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const explanationElement = document.getElementById('explanation');
-
-
-
-    var currentQuestion = 0;
-    let questionArray = [];
-    let questionUUIDs = [];
-    //const QUIZ_URL = 'http://localhost:8080/question';
-    const QUIZ_URL = 'https://csa-web.onrender.com/question';
-
-
-    const loadQuestion = () => {
-
-      fetch(QUIZ_URL)
-        .then(response => response.json())
-        .then(responseJson => {
-            questionArray = responseJson;
-            for (let i = 0; i < questionArray.length; i++) {
-                const currentQuestion = questionArray[i];
-                const currentQuestionUUID = currentQuestion.id;
-                questionUUIDs.push(currentQuestionUUID);
-             }
-             console.log(questionUUIDs);
-
-             loadQuestionByUUID(questionUUIDs[currentQuestion]);
-      });
-    }
-
-        const loadQuestionByUUID = (uuid) => {
-            console.log(QUIZ_URL + '/' + uuid);
-
-            fetch(QUIZ_URL + '/' + uuid)
-            .then(response => response.json())
-            .then(responseJson => {
-            updateQuestionPage(responseJson);
-
-            nextBtn.addEventListener('click', () => {
-    if (currentQuestion < questionArray.length - 1 && currentQuestion < 4) {
-        currentQuestion++;
-        updateQuestionPage(questionArray[currentQuestion]);
-        }
-    });
-
-backBtn.addEventListener('click', () => {
-    if (currentQuestion > 0) {
-        currentQuestion--;
-        updateQuestionPage(questionArray[currentQuestion]);
-        }
-    });
-
-submitBtn.addEventListener('click', () => {
-    var selectedAnswer = '';
-    for (let i = 0; i < responseJson.answer_choices.length; i++) {
-        const radioButtons = document.getElementById('input' + i);
-        if (radioButtons.checked) {
-            selectedAnswer = radioButtons.value;
-        }
-    }
-    if (selectedAnswer === '') {
-        alert("Please select an answer before submitting.");
-        return;
-
-    }
-
-    const correctAnswer = questionArray[currentQuestion].feedback[0].correct_answer;
-    console.log(correctAnswer);
-    console.log(selectedAnswer);
-    displayExplanation(selectedAnswer, correctAnswer);
-            });
-        });
-    }
-
-
-
-    const updateQuestionPage = (responseJson) => {
-        explanationElement.innerHTML = '';
-        const questionContainer = responseJson;
-        const question = questionContainer.question[0];
-
-        questionNumElement.innerText = 'Question ' + questionContainer.page;
-        mainQuestionElement.innerText = question.question_header;
-        questionCodeElement.innerText = question.question_code.code;
-        subQuestionElement.innerText = question.question_main;
-        choicesElement.innerHTML = ''; 
-
-        //looped throught the list of answer choices and ended at index 3 because there are 4 answer choices and accessed each key and value
-
-        for(let i = 0; i < questionContainer.answer_choices.length; i++) {
-            const answerchoice = questionContainer.answer_choices[i];
-            const answerKey = answerchoice.key;
-            const answerValue = answerchoice.value;
-            const fullChoice = answerKey + " " + answerValue;
-            //cant use innerline because it will be overwritten everytime, only causing the last element to be displayed
-            //therefore you need to make each choice have its own "div"
-            const choiceDiv = document.createElement("div");
-            //choiceDiv.setAttribute("class", "main-question")
-
-            //made a radiobutton to have the value of the answer choices
-            const input = document.createElement("input");
-            input.id = 'input' + i;
-            input.type = "radio";
-            input.name = "answerChoices";
-            input.value = answerValue;        
-            
-            choiceDiv.append(input);
-            choiceDiv.append(fullChoice); 
-            choicesElement.append(choiceDiv);
-        }
-        //style
-        questioncontainerElement.style.display = 'block';
-
-       
-    }
-
-    function displayExplanation(selectedAnswer, correctAnswer) {
-        const feedback = questionArray[currentQuestion].feedback[0].explanation;
-
-            if (selectedAnswer == correctAnswer) {
-                explanationElement.innerHTML = 'Correct <br>' + feedback;
-            } else {
-                explanationElement.innerHTML = 'Incorrect <br> ' + feedback;
-
-            }
-    }
-
-    
-    loadQuestion();
-
-    
-
-    
-    </script>
+     <!-- external javascript file -->
+     <script src="js/main.js"></script> 
 </body>
 </html>
