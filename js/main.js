@@ -14,8 +14,8 @@ const explanationElement = document.getElementById('explanation');
 var currentQuestion = 0;
 let questionArray = [];
 let questionUUIDs = [];
-//const QUIZ_URL = 'http://localhost:8080/question';
-const QUIZ_URL = 'https://csa-web.onrender.com/question';
+const QUIZ_URL = 'http://localhost:8080/question';
+//const QUIZ_URL = 'https://csa-web.onrender.com/question';
 
 
 const loadQuestion = () => {
@@ -34,6 +34,8 @@ const loadQuestion = () => {
   });
 }
 
+
+
 const loadQuestionByUUID = (uuid) => {
     //console.log(QUIZ_URL + '/' + uuid);
 
@@ -43,16 +45,19 @@ const loadQuestionByUUID = (uuid) => {
             updateQuestionPage(responseJson);
 
             nextBtn.addEventListener('click', () => {
-                if (currentQuestion < questionArray.length - 1 && currentQuestion < 4) {
+                if (currentQuestion < questionArray.length - 1 ) {
                     currentQuestion++;
                     updateQuestionPage(questionArray[currentQuestion]);
+                    updateButton();
                 }
+                
             });
 
             backBtn.addEventListener('click', () => {
                 if (currentQuestion > 0) {
                     currentQuestion--;
                     updateQuestionPage(questionArray[currentQuestion]);
+                    updateButton();
                 }
             });
 
@@ -77,6 +82,20 @@ const loadQuestionByUUID = (uuid) => {
             });
         });
 }
+
+const updateButton = () => {
+    if (currentQuestion == 0) {
+        backBtn.style.display = 'none';
+    } else {
+        backBtn.style.display = 'block';
+    }
+
+    if (currentQuestion == 6) {
+        nextBtn.style.display = 'none';
+    } else {
+        nextBtn.style.display = 'block';
+    }
+};
 
 const updateQuestionPage = (responseJson) => {
     explanationElement.innerHTML = '';
