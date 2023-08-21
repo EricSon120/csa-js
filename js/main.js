@@ -34,54 +34,50 @@ const loadQuestion = () => {
   });
 }
 
+const loadQuestionbyUnitandSubgroup = (unit, subgroup) => {
+    const questionUnitandSub = QUIZ_URL + "/unit/" + unit + "/subgroup/" + subgroup;
+    fetch(questionUnitandSub)
+    .then(response => response.json())
+    .then(responseJson => {
+        questionArray = responseJson;
+        currentQuestion = 0; 
+        // for(var i =0; i < questionArray.length; i++) {
+        //     updateQuestionPage(questionArray[currentQuestion]);
+        // }
+
+        // questionArray.forEach(question => {
+        //     updateQuestionPage(question); 
+        // });
+
+        questionArray.forEach(question => updateQuestionPage(question));
+
+        const questionFunction = question => {
+            updateQuestionPage(question); 
+        }
+        questionArray.forEach(questionFunction);
+        addButtonListener();
+        }
+    )};
+
+// const loadQuestionByUUID = (uuid) => {
+//     //console.log(QUIZ_URL + '/' + uuid);
+
+//     fetch(QUIZ_URL + '/' + uuid)
+//         .then(response => response.json())
+//         .then(responseJson => {
+//             const unit = responseJson.unit;
+//             const subgroup = responseJson.subgroup;
+//             updateQuestionPage(responseJson);
+//             addButtonListener();
+
+//                 const correctAnswer = questionArray[currentQuestion].feedback[0].correct_answer;
+//                 console.log(correctAnswer);
+//                 console.log(selectedAnswer);
+//                 displayExplanation(selectedAnswer, correctAnswer);
+//             });
+//         };
 
 
-const loadQuestionByUUID = (uuid) => {
-    //console.log(QUIZ_URL + '/' + uuid);
-
-    fetch(QUIZ_URL + '/' + uuid)
-        .then(response => response.json())
-        .then(responseJson => {
-            updateQuestionPage(responseJson);
-
-            nextBtn.addEventListener('click', () => {
-                if (currentQuestion < questionArray.length - 1 ) {
-                    currentQuestion++;
-                    updateQuestionPage(questionArray[currentQuestion]);
-                    updateButton();
-                }
-                
-            });
-
-            backBtn.addEventListener('click', () => {
-                if (currentQuestion > 0) {
-                    currentQuestion--;
-                    updateQuestionPage(questionArray[currentQuestion]);
-                    updateButton();
-                }
-            });
-
-            submitBtn.addEventListener('click', () => {
-                var selectedAnswer = '';
-                for (let i = 0; i < responseJson.answer_choices.length; i++) {
-                    const radioButtons = document.getElementById('input' + i);
-                    if (radioButtons.checked) {
-                        selectedAnswer = radioButtons.value;
-                    }
-                }
-                if (selectedAnswer === '') {
-                    alert("Please select an answer before submitting.");
-                    return;
-
-                }
-
-                const correctAnswer = questionArray[currentQuestion].feedback[0].correct_answer;
-                console.log(correctAnswer);
-                console.log(selectedAnswer);
-                displayExplanation(selectedAnswer, correctAnswer);
-            });
-        });
-}
 
 const updateButton = () => {
     if (currentQuestion == 0) {
@@ -95,6 +91,40 @@ const updateButton = () => {
     } else {
         nextBtn.style.display = 'block';
     }
+};
+
+const addButtonListener = () => {
+
+    nextBtn.addEventListener('click', () => {
+        if (currentQuestion < questionArray.length - 1 ) {
+            currentQuestion++;
+            updateQuestionPage(questionArray[currentQuestion]);
+            updateButton();
+        }
+    });
+    backBtn.addEventListener('click', () => {
+        if (currentQuestion > 0) {
+            currentQuestion--;
+            updateQuestionPage(questionArray[currentQuestion]);
+            updateButton();
+        }
+    });
+
+    submitBtn.addEventListener('click', () => {
+        const radioButtons = document.getElementsByName('answerChoices');
+        var selectedAnswer = '';
+        for (let i = 0; i < radioButtons.length; i++) {
+            if (radioButtons[i].checked) {
+                selectedAnswer = radioButtons[i].value;
+            }
+        }
+        if (selectedAnswer === '') {
+            alert("Please select an answer before submitting.");
+            return;
+        }
+        const correctAnswer = questionArray[currentQuestion].feedback[0].correct_answer;
+        displayExplanation(selectedAnswer, correctAnswer); 
+    })
 };
 
 const updateQuestionPage = (responseJson) => {
@@ -133,8 +163,6 @@ const updateQuestionPage = (responseJson) => {
     }
     //style
     questioncontainerElement.style.display = 'block';
-
-   
 }
 
 function displayExplanation(selectedAnswer, correctAnswer) {
@@ -144,9 +172,15 @@ function displayExplanation(selectedAnswer, correctAnswer) {
             explanationElement.innerHTML = 'Correct <br>' + feedback;
         } else {
             explanationElement.innerHTML = 'Incorrect <br> ' + feedback;
-
         }
-}
+};
 
+let quizLinkInfo = [{ id: 'quiz1', unit: 1, subgroup: 1 },{ id: 'quiz2', unit: 2, subgroup: 1 },];
 
-loadQuestion();
+quizLinkInfo.forEach(link => {
+    const quizLink = document.getElementById(link.id);
+    quizLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        loadQuestionbyUnitandSubgroup(link.unit, link.subgroup);
+        });
+});
