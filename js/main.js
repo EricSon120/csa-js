@@ -8,31 +8,34 @@ const submitBtn = document.getElementById('submitBtn');
 const backBtn = document.getElementById('backBtn');
 const nextBtn = document.getElementById('nextBtn');
 const explanationElement = document.getElementById('explanation');
+const buttonElement = document.getElementById('button-container');
+const unitsLink = document.getElementById('units');
+const quizLinkElement1 = document.getElementById('main-menu1');
+const quizLinkElement2 = document.getElementById('main-menu2');
 
 
 
-var currentQuestion = 0;
 let questionArray = [];
 let questionUUIDs = [];
 const QUIZ_URL = 'http://localhost:8080/question';
 //const QUIZ_URL = 'https://csa-web.onrender.com/question';
 
 
-const loadQuestion = () => {
-  fetch(QUIZ_URL)
-    .then(response => response.json())
-    .then(responseJson => {
-        questionArray = responseJson;
-        for (let i = 0; i < questionArray.length; i++) {
-            const currentQuestion = questionArray[i];
-            const currentQuestionUUID = currentQuestion.id;
-            questionUUIDs.push(currentQuestionUUID);
-         }
-         console.log(questionUUIDs);
+// const loadQuestion = () => {
+//   fetch(QUIZ_URL)
+//     .then(response => response.json())
+//     .then(responseJson => {
+//         questionArray = responseJson;
+//         for (let i = 0; i < questionArray.length; i++) {
+//             const currentQuestion = questionArray[i];
+//             const currentQuestionUUID = currentQuestion.id;
+//             questionUUIDs.push(currentQuestionUUID);
+//          }
+//          console.log(questionUUIDs);
 
-         loadQuestionByUUID(questionUUIDs[currentQuestion]);
-  });
-}
+//          loadQuestionByUUID(questionUUIDs[currentQuestion]);
+//   });
+// }
 
 const loadQuestionbyUnitandSubgroup = (unit, subgroup) => {
     const questionUnitandSub = QUIZ_URL + "/unit/" + unit + "/subgroup/" + subgroup;
@@ -40,73 +43,51 @@ const loadQuestionbyUnitandSubgroup = (unit, subgroup) => {
     .then(response => response.json())
     .then(responseJson => {
         questionArray = responseJson;
-        currentQuestion = 0; 
-        // for(var i =0; i < questionArray.length; i++) {
-        //     updateQuestionPage(questionArray[currentQuestion]);
-        // }
+        lastQuestionNum = questionArray.length - 1;
+        updateQuestionPage(questionArray[0]);
+
 
         // questionArray.forEach(question => {
+        //     console.log(question);
+        //     console.log("-------------");
         //     updateQuestionPage(question); 
         // });
 
-        questionArray.forEach(question => updateQuestionPage(question));
-
-        const questionFunction = question => {
-            updateQuestionPage(question); 
-        }
-        questionArray.forEach(questionFunction);
-        addButtonListener();
+        addButtonListener(0, questionArray.length-1);
+        buttonElement.style.display = 'block';
         }
     )};
 
-// const loadQuestionByUUID = (uuid) => {
-//     //console.log(QUIZ_URL + '/' + uuid);
-
-//     fetch(QUIZ_URL + '/' + uuid)
-//         .then(response => response.json())
-//         .then(responseJson => {
-//             const unit = responseJson.unit;
-//             const subgroup = responseJson.subgroup;
-//             updateQuestionPage(responseJson);
-//             addButtonListener();
-
-//                 const correctAnswer = questionArray[currentQuestion].feedback[0].correct_answer;
-//                 console.log(correctAnswer);
-//                 console.log(selectedAnswer);
-//                 displayExplanation(selectedAnswer, correctAnswer);
-//             });
-//         };
-
-
-
-const updateButton = () => {
+const updateButton = (currentQuestion, lastQuestionNum) => {
     if (currentQuestion == 0) {
         backBtn.style.display = 'none';
     } else {
         backBtn.style.display = 'block';
     }
 
-    if (currentQuestion == 6) {
+    if (currentQuestion == lastQuestionNum) {
         nextBtn.style.display = 'none';
     } else {
         nextBtn.style.display = 'block';
     }
 };
 
-const addButtonListener = () => {
+
+const addButtonListener = (currentQuestion, lastQuestionNum) => {
+    updateButton(currentQuestion, lastQuestionNum);
 
     nextBtn.addEventListener('click', () => {
         if (currentQuestion < questionArray.length - 1 ) {
             currentQuestion++;
             updateQuestionPage(questionArray[currentQuestion]);
-            updateButton();
+            updateButton(currentQuestion, lastQuestionNum);
         }
     });
     backBtn.addEventListener('click', () => {
         if (currentQuestion > 0) {
             currentQuestion--;
             updateQuestionPage(questionArray[currentQuestion]);
-            updateButton();
+            updateButton(currentQuestion, lastQuestionNum);
         }
     });
 
@@ -123,7 +104,7 @@ const addButtonListener = () => {
             return;
         }
         const correctAnswer = questionArray[currentQuestion].feedback[0].correct_answer;
-        displayExplanation(selectedAnswer, correctAnswer); 
+        displayExplanation(selectedAnswer, correctAnswer, currentQuestion); 
     })
 };
 
@@ -131,6 +112,7 @@ const updateQuestionPage = (responseJson) => {
     explanationElement.innerHTML = '';
     const questionContainer = responseJson;
     const question = questionContainer.question[0];
+    console.log(questionContainer.page);
 
     questionNumElement.innerText = 'Question ' + questionContainer.page;
     mainQuestionElement.innerText = question.question_header;
@@ -165,7 +147,7 @@ const updateQuestionPage = (responseJson) => {
     questioncontainerElement.style.display = 'block';
 }
 
-function displayExplanation(selectedAnswer, correctAnswer) {
+function displayExplanation(selectedAnswer, correctAnswer, currentQuestion) {
     const feedback = questionArray[currentQuestion].feedback[0].explanation;
 
         if (selectedAnswer == correctAnswer) {
@@ -177,6 +159,25 @@ function displayExplanation(selectedAnswer, correctAnswer) {
 
 let quizLinkInfo = [{ id: 'quiz1', unit: 1, subgroup: 1 },{ id: 'quiz2', unit: 2, subgroup: 1 },];
 
+unitsLink.addEventListener('click', function(event) {
+    event.preventDefault();
+    if (quizLinkElement1.style.display == 'none') {
+        quizLinkElement1.style.display = 'block';
+    } else {
+        quizLinkElement1.style.display = 'none';
+
+    }
+});
+unitsLink.addEventListener('click', function(event) {
+    event.preventDefault();
+    if (quizLinkElement2.style.display == 'none') {
+        quizLinkElement2.style.display = 'block';
+
+    } else {
+        quizLinkElement2.style.display = 'none';
+    }
+});
+
 quizLinkInfo.forEach(link => {
     const quizLink = document.getElementById(link.id);
     quizLink.addEventListener('click', function(event) {
@@ -184,3 +185,5 @@ quizLinkInfo.forEach(link => {
         loadQuestionbyUnitandSubgroup(link.unit, link.subgroup);
         });
 });
+
+

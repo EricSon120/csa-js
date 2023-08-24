@@ -5,6 +5,11 @@
     padding: 4px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
+    margin-right: 5px;
+
+}
+#button-container {
+    display: none;
 }
 .question-container {
     margin: 120px 120px 20px 120px;
@@ -44,4 +49,12 @@
 }
 .navigation-button {
     padding-left: 120px;
+    display: flex;
+}
+.main-menu1 {
+    display: none;
+}
+
+.main-menu2 {
+    display: none;
 }
