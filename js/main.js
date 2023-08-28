@@ -9,9 +9,7 @@ const backBtn = document.getElementById('backBtn');
 const nextBtn = document.getElementById('nextBtn');
 const explanationElement = document.getElementById('explanation');
 const buttonElement = document.getElementById('button-container');
-const unitsLink = document.getElementById('units');
-const quizLinkElement1 = document.getElementById('main-menu1');
-const quizLinkElement2 = document.getElementById('main-menu2');
+const quizLinkContainer = document.getElementById('quiz-link-container');
 
 
 
@@ -20,22 +18,6 @@ let questionUUIDs = [];
 const QUIZ_URL = 'http://localhost:8080/question';
 //const QUIZ_URL = 'https://csa-web.onrender.com/question';
 
-
-// const loadQuestion = () => {
-//   fetch(QUIZ_URL)
-//     .then(response => response.json())
-//     .then(responseJson => {
-//         questionArray = responseJson;
-//         for (let i = 0; i < questionArray.length; i++) {
-//             const currentQuestion = questionArray[i];
-//             const currentQuestionUUID = currentQuestion.id;
-//             questionUUIDs.push(currentQuestionUUID);
-//          }
-//          console.log(questionUUIDs);
-
-//          loadQuestionByUUID(questionUUIDs[currentQuestion]);
-//   });
-// }
 
 const loadQuestionbyUnitandSubgroup = (unit, subgroup) => {
     const questionUnitandSub = QUIZ_URL + "/unit/" + unit + "/subgroup/" + subgroup;
@@ -157,33 +139,72 @@ function displayExplanation(selectedAnswer, correctAnswer, currentQuestion) {
         }
 };
 
-let quizLinkInfo = [{ id: 'quiz1', unit: 1, subgroup: 1 },{ id: 'quiz2', unit: 2, subgroup: 1 },];
-
-unitsLink.addEventListener('click', function(event) {
-    event.preventDefault();
-    if (quizLinkElement1.style.display == 'none') {
-        quizLinkElement1.style.display = 'block';
+function toggleMenuDisplay(menuElement) {
+    if (menuElement.style.display == 'none') {
+        menuElement.style.display = 'block';
     } else {
-        quizLinkElement1.style.display = 'none';
-
+        menuElement.style.display = 'none';
     }
-});
-unitsLink.addEventListener('click', function(event) {
-    event.preventDefault();
-    if (quizLinkElement2.style.display == 'none') {
-        quizLinkElement2.style.display = 'block';
+}
 
-    } else {
-        quizLinkElement2.style.display = 'none';
-    }
-});
+const loadLinks = () => {
+    fetch(QUIZ_URL + "/list/unique")
+        .then(response => response.json())
+        .then(responseJson => {
+            const menu = document.getElementById('menu');
 
-quizLinkInfo.forEach(link => {
-    const quizLink = document.getElementById(link.id);
-    quizLink.addEventListener('click', function(event) {
-        event.preventDefault();
-        loadQuestionbyUnitandSubgroup(link.unit, link.subgroup);
+            const units = [];
+            responseJson.forEach(item => {
+                if (!units.includes(item.unit)) {
+                    units.push(item.unit);
+                }
+            });
+
+            units.forEach(unit => {
+                const unitLink = document.createElement('a');
+                unitLink.href = '#';
+                unitLink.textContent = 'Unit ' + unit;
+
+                const unitdiv = document.createElement('div');
+                unitdiv.id = 'main-menu-unit' + unit;
+                unitdiv.className = 'main-menu-unit';
+
+                unitLink.addEventListener('click', event => {
+                    event.preventDefault();
+                    toggleMenuDisplay(unitdiv);
+                });
+
+                menu.append(unitLink, unitdiv);
+
+                const unitQuizLinks = [];
+                for (let i = 0; i < responseJson.length; i++) {
+                    const currentItem = responseJson[i];
+                    if (currentItem.unit == unit) {
+                        unitQuizLinks.push(currentItem);
+                    }
+                }                
+                for (let i = 0; i < unitQuizLinks.length; i++) {
+                    const quizLink = unitQuizLinks[i];
+                
+                    if (i > 0) {
+                        unitdiv.append(document.createElement('br')); 
+                    }
+                
+                    const quizLinkElement = document.createElement('a');
+                    quizLinkElement.href = '#';
+                    quizLinkElement.textContent = 'Quiz ' + quizLink.subgroup;
+                
+                    quizLinkElement.addEventListener('click', event => {
+                        event.preventDefault();
+                        loadQuestionbyUnitandSubgroup(quizLink.unit, quizLink.subgroup);
+                    });
+                
+                    unitdiv.append(quizLinkElement); 
+                }
+            });
+            quizLinkContainer.style.display = 'block';
         });
-});
+};
 
 
+loadLinks();

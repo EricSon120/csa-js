@@ -35,3 +35,20 @@ json-server --watch ./stub/lesson/data.json
         //     updateQuestionPage(question); 
         // }
         // questionArray.forEach(questionFunction);
+
+
+        // const loadQuestion = () => {
+//   fetch(QUIZ_URL)
+//     .then(response => response.json())
+//     .then(responseJson => {
+//         questionArray = responseJson;
+//         for (let i = 0; i < questionArray.length; i++) {
+//             const currentQuestion = questionArray[i];
+//             const currentQuestionUUID = currentQuestion.id;
+//             questionUUIDs.push(currentQuestionUUID);
+//          }
+//          console.log(questionUUIDs);
+
+//          loadQuestionByUUID(questionUUIDs[currentQuestion]);
+//   });
+// }
