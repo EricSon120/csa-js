@@ -2,7 +2,7 @@ const questioncontainerElement = document.getElementById('question-container');
 const questionNumElement = document.getElementById('question-num');
 const mainQuestionElement = document.getElementById('main-question');
 const questionCodeElement = document.getElementById('question-code');
-const subQuestionElement = document.getElementById('sub-question');
+const quizElement = document.getElementById('quiz');
 const choicesElement = document.getElementById('choices');
 const submitBtn = document.getElementById('submitBtn'); 
 const backBtn = document.getElementById('backBtn');
@@ -14,14 +14,13 @@ const quizLinkContainer = document.getElementById('quiz-link-container');
 
 
 let questionArray = [];
-let questionUUIDs = [];
 const QUIZ_URL = 'http://localhost:8080/question';
 //const QUIZ_URL = 'https://csa-web.onrender.com/question';
 
 
-const loadQuestionbyUnitandSubgroup = (unit, subgroup) => {
-    const questionUnitandSub = QUIZ_URL + "/unit/" + unit + "/subgroup/" + subgroup;
-    fetch(questionUnitandSub)
+const loadQuestionbyUnitandQuiz = (unit, quiz) => {
+    const questionUnitandQuiz = QUIZ_URL + "/unit/" + unit + "/quiz/" + quiz;
+    fetch(questionUnitandQuiz)
     .then(response => response.json())
     .then(responseJson => {
         questionArray = responseJson;
@@ -99,7 +98,7 @@ const updateQuestionPage = (responseJson) => {
     questionNumElement.innerText = 'Question ' + questionContainer.page;
     mainQuestionElement.innerText = question.question_header;
     questionCodeElement.innerText = question.question_code.code;
-    subQuestionElement.innerText = question.question_main;
+    quizElement.innerText = question.question_main;
     choicesElement.innerHTML = ''; 
 
     //looped throught the list of answer choices and ended at index 3 because there are 4 answer choices and accessed each key and value
@@ -139,15 +138,36 @@ function displayExplanation(selectedAnswer, correctAnswer, currentQuestion) {
         }
 };
 
-function toggleMenuDisplay(menuElement) {
-    if (menuElement.style.display == 'none') {
-        menuElement.style.display = 'block';
+// function toggleQuizLinks(unitRef, quizLinksContainer) {
+//     console.log(unitRef.style.display);
+//     if (unitRef.style.display === 'none') {
+//         console.log("testing if statement")
+//         unitRef.style.display = 'block';
+//         quizLinksContainer.style.display = 'block';
+//     } else {
+//         console.log("testing else statement")
+//         unitRef.style.display = 'none';
+//         quizLinksContainer.style.display = 'none';
+//     }
+// }
+
+
+function toggleQuizLinks(linkKeyAndValue) {
+    const unitdiv = linkKeyAndValue.unitdiv;
+    const quizLinkContainer = linkKeyAndValue.quizLinkContainer;
+
+    if (unitdiv.style.display === 'none') {
+        unitdiv.style.display = 'block';
+        quizLinkContainer.style.display = 'block';
     } else {
-        menuElement.style.display = 'none';
+        unitdiv.style.display = 'none';
+        quizLinkContainer.style.display = 'none';
     }
 }
+const unitDivQuizLinkPairList = [];
 
-const loadLinks = () => {
+const linkKeyAndValue = [];
+function loadLinks() {
     fetch(QUIZ_URL + "/list/unique")
         .then(response => response.json())
         .then(responseJson => {
@@ -164,47 +184,59 @@ const loadLinks = () => {
                 const unitLink = document.createElement('a');
                 unitLink.href = '#';
                 unitLink.textContent = 'Unit ' + unit;
-
+            
                 const unitdiv = document.createElement('div');
                 unitdiv.id = 'main-menu-unit' + unit;
                 unitdiv.className = 'main-menu-unit';
-
-                unitLink.addEventListener('click', event => {
-                    event.preventDefault();
-                    toggleMenuDisplay(unitdiv);
-                });
-
-                menu.append(unitLink, unitdiv);
-
-                const unitQuizLinks = [];
-                for (let i = 0; i < responseJson.length; i++) {
-                    const currentItem = responseJson[i];
-                    if (currentItem.unit == unit) {
-                        unitQuizLinks.push(currentItem);
-                    }
-                }                
-                for (let i = 0; i < unitQuizLinks.length; i++) {
-                    const quizLink = unitQuizLinks[i];
-                
-                    if (i > 0) {
-                        unitdiv.append(document.createElement('br')); 
-                    }
-                
+                unitdiv.style.display = 'none';
+            
+                const quizLinksContainer = document.createElement('div');
+                quizLinksContainer.style.display = 'none';
+            
+                menu.append(unitLink, unitdiv, quizLinksContainer);
+            
+                const unitQuizLinks = responseJson.filter(item => item.unit === unit);
+            
+                unitQuizLinks.forEach(quizLink => {
                     const quizLinkElement = document.createElement('a');
                     quizLinkElement.href = '#';
-                    quizLinkElement.textContent = 'Quiz ' + quizLink.subgroup;
-                
+                    quizLinkElement.textContent = 'Quiz ' + quizLink.quiz;
+            
                     quizLinkElement.addEventListener('click', event => {
-                        event.preventDefault();
-                        loadQuestionbyUnitandSubgroup(quizLink.unit, quizLink.subgroup);
+                        loadQuestionbyUnitandQuiz(quizLink.unit, quizLink.quiz);
                     });
-                
-                    unitdiv.append(quizLinkElement); 
-                }
-            });
-            quizLinkContainer.style.display = 'block';
-        });
-};
+            
+                    quizLinksContainer.append(quizLinkElement);
+                });
+            
+                const linkKeyAndValue = {
+                    unitLink: unitLink,
+                    unitdiv: unitdiv,
+                    quizLinkContainer: quizLinksContainer
+                };
 
+                unitDivQuizLinkPairList.push(linkKeyAndValue);
+                console.log(linkKeyAndValue);
+                });
+
+            unitDivQuizLinkPairList.forEach(linkKeyAndValue => {
+                toggleQuizLinks(linkKeyAndValue);
+                linkKeyAndValue.unitLink.addEventListener('click', event => {
+                    linkKeyAndValue.unitLink.addEventListener('click', event => {
+                
+                        unitDivQuizLinkPairList.forEach(linkpair => {
+                            if (linkpair.unitLink == linkKeyAndValue.unitLink) {
+                                linkpair.unitdiv.style.display = 'block';
+                                linkpair.quizLinkContainer.style.display = 'block';
+                            } else {
+                                linkpair.unitdiv.style.display = 'none';
+                                linkpair.quizLinkContainer.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+            });
+        });
+}
 
 loadLinks();
