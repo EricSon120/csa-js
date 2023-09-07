@@ -14,6 +14,7 @@ const quizLinkContainer = document.getElementById('quiz-link-container');
 
 
 let questionArray = [];
+const unitDivQuizLinkPairList = [];
 const QUIZ_URL = 'http://localhost:8080/question';
 //const QUIZ_URL = 'https://csa-web.onrender.com/question';
 
@@ -26,8 +27,6 @@ const loadQuestionbyUnitandQuiz = (unit, quiz) => {
         questionArray = responseJson;
         lastQuestionNum = questionArray.length - 1;
         updateQuestionPage(questionArray[0]);
-
-
         // questionArray.forEach(question => {
         //     console.log(question);
         //     console.log("-------------");
@@ -164,9 +163,42 @@ function toggleQuizLinks(linkKeyAndValue) {
         quizLinkContainer.style.display = 'none';
     }
 }
-const unitDivQuizLinkPairList = [];
 
-const linkKeyAndValue = [];
+function toggleUnitLinks(linkKeyAndValue) {
+    linkKeyAndValue.unitLink.addEventListener('click', () => {
+      unitDivQuizLinkPairList.forEach(linkpair => {
+        if (linkpair.unitLink == linkKeyAndValue.unitLink) {
+          linkpair.unitdiv.style.display = 'block';
+          linkpair.quizLinkContainer.style.display = 'block';
+        } else {
+          linkpair.unitdiv.style.display = 'none';
+          linkpair.quizLinkContainer.style.display = 'none';
+        }
+      });
+    });
+}
+
+function createLink(unitNumber, unitText, href) {
+    const link = document.createElement('a');
+    link.href = href;
+    link.textContent = unitText + ' ' + unitNumber;
+    return link;
+}
+  
+function createDiv(unitNumber, className, isDisplay) {
+    const unitDiv = document.createElement('div');
+    unitDiv.className = className;
+    unitDiv.id = className + unitNumber;
+
+    if (isDisplay) {
+        unitDiv.style.display = 'block';
+    } 
+    else {
+        unitDiv.style.display = 'none';
+    }
+    return unitDiv;
+}   
+
 function loadLinks() {
     fetch(QUIZ_URL + "/list/unique")
         .then(response => response.json())
@@ -180,27 +212,17 @@ function loadLinks() {
                 }
             });
 
-            units.forEach(unit => {
-                const unitLink = document.createElement('a');
-                unitLink.href = '#';
-                unitLink.textContent = 'Unit ' + unit;
+            units.forEach(unitNumber => {
+                const unitLink = createLink(unitNumber, 'Unit', '#');
+                const unitDiv = createDiv(unitNumber, 'main-menu-unit', false);
+                const quizLinksContainer = createDiv(unitNumber, 'quiz-container', false);
+
+                menu.append(unitLink, unitDiv, quizLinksContainer);
             
-                const unitdiv = document.createElement('div');
-                unitdiv.id = 'main-menu-unit' + unit;
-                unitdiv.className = 'main-menu-unit';
-                unitdiv.style.display = 'none';
-            
-                const quizLinksContainer = document.createElement('div');
-                quizLinksContainer.style.display = 'none';
-            
-                menu.append(unitLink, unitdiv, quizLinksContainer);
-            
-                const unitQuizLinks = responseJson.filter(item => item.unit === unit);
+                const unitQuizLinks = responseJson.filter(item => item.unit === unitNumber);
             
                 unitQuizLinks.forEach(quizLink => {
-                    const quizLinkElement = document.createElement('a');
-                    quizLinkElement.href = '#';
-                    quizLinkElement.textContent = 'Quiz ' + quizLink.quiz;
+                    const quizLinkElement = createLink(quizLink.quiz, 'Quiz', '#');
             
                     quizLinkElement.addEventListener('click', event => {
                         loadQuestionbyUnitandQuiz(quizLink.unit, quizLink.quiz);
@@ -211,32 +233,19 @@ function loadLinks() {
             
                 const linkKeyAndValue = {
                     unitLink: unitLink,
-                    unitdiv: unitdiv,
+                    unitdiv: unitDiv,
                     quizLinkContainer: quizLinksContainer
                 };
 
                 unitDivQuizLinkPairList.push(linkKeyAndValue);
-                console.log(linkKeyAndValue);
-                });
-
-            unitDivQuizLinkPairList.forEach(linkKeyAndValue => {
                 toggleQuizLinks(linkKeyAndValue);
-                linkKeyAndValue.unitLink.addEventListener('click', event => {
-                    linkKeyAndValue.unitLink.addEventListener('click', event => {
-                
-                        unitDivQuizLinkPairList.forEach(linkpair => {
-                            if (linkpair.unitLink == linkKeyAndValue.unitLink) {
-                                linkpair.unitdiv.style.display = 'block';
-                                linkpair.quizLinkContainer.style.display = 'block';
-                            } else {
-                                linkpair.unitdiv.style.display = 'none';
-                                linkpair.quizLinkContainer.style.display = 'none';
-                            }
-                        });
-                    });
-                });
+                toggleUnitLinks(linkKeyAndValue);               
+                console.log(linkKeyAndValue);
+
+            
             });
         });
 }
+
 
 loadLinks();
