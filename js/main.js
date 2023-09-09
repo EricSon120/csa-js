@@ -9,7 +9,9 @@ const backBtn = document.getElementById('backBtn');
 const nextBtn = document.getElementById('nextBtn');
 const explanationElement = document.getElementById('explanation');
 const buttonElement = document.getElementById('button-container');
-const quizLinkContainer = document.getElementById('quiz-link-container');
+
+const leftMenuParent = document.getElementById('leftMenu');
+const quizLinkContainer = document.getElementById('quizlinks')
 
 
 
@@ -199,53 +201,98 @@ function createDiv(unitNumber, className, isDisplay) {
     return unitDiv;
 }   
 
+function addEventListeners(aElement, unitQuizMap) {
+    aElement.addEventListener('click', (event) => {
+        const unitNumber = aElement.id.replace('unitLink', '');
+        const quizzes = unitQuizMap[unitNumber];
+        quizLinkContainer.innerHTML = '';
+
+        quizzes.forEach((quizNumber) => {
+            const quizLinkElement = createLink(quizNumber, 'Quiz', '#');
+            quizLinkElement.setAttribute('class', 'quizlink');
+            quizLinkContainer.append(quizLinkElement);
+        });
+        quizLinkContainer.style.display = 'block';
+
+        const keys = Object.keys(unitQuizMap);
+        console.log(keys);
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            const unitDiv = document.getElementById('unitDiv' + key);
+            if (unitDiv) {
+                if (key === unitNumber) {
+                    unitDiv.style.display = 'block';
+                } else {
+                    unitDiv.style.display = 'none';
+                }
+            }
+        }
+    });
+}
+
+
+
+
+
+
+
+
+function createMenuElement(unitNumber, unitQuizMap) {
+    const iElement = document.createElement('i');
+    iElement.setAttribute('class', "fas fa-file");
+    const iconSpanElement = document.createElement('span');
+    iconSpanElement.setAttribute('class', "icon");
+    iconSpanElement.append(iElement);
+
+    const itemSpanElement = document.createElement('span');
+    itemSpanElement.setAttribute('class', "item")
+    itemSpanElement.innerText = "Unit " + unitNumber;
+
+    const aElement = document.createElement('a');
+    aElement.setAttribute('id', "unitLink" + unitNumber);
+    aElement.setAttribute('href', "#unit" + unitNumber);
+    aElement.append(iconSpanElement);
+    aElement.append(itemSpanElement);
+    addEventListeners(aElement, unitQuizMap);
+
+    const liElement = document.createElement('li');
+    liElement.append(aElement);
+
+    return liElement;
+}
+
 function loadLinks() {
     fetch(QUIZ_URL + "/list/unique")
         .then(response => response.json())
         .then(responseJson => {
-            const menu = document.getElementById('menu');
+            const uniqueUnitNumbers = [];
+            const unitQuizMap = {};
+            responseJson.forEach(element => {
+                const unitNumber = element.unit;
+                const quizNumber = element.quiz;
+                if (!unitQuizMap[unitNumber]) {
+                    unitQuizMap[unitNumber] = []; 
+                  }
+                  unitQuizMap[unitNumber].push(quizNumber); 
 
-            const units = [];
-            responseJson.forEach(item => {
-                if (!units.includes(item.unit)) {
-                    units.push(item.unit);
+                if (!uniqueUnitNumbers.includes(unitNumber)) {
+                    uniqueUnitNumbers.push(unitNumber);
                 }
             });
-
-            units.forEach(unitNumber => {
-                const unitLink = createLink(unitNumber, 'Unit', '#');
-                const unitDiv = createDiv(unitNumber, 'main-menu-unit', false);
-                const quizLinksContainer = createDiv(unitNumber, 'quiz-container', false);
-
-                menu.append(unitLink, unitDiv, quizLinksContainer);
-            
+            console.log(uniqueUnitNumbers);
+            uniqueUnitNumbers.forEach(unitNumber => {
                 const unitQuizLinks = responseJson.filter(item => item.unit === unitNumber);
-            
-                unitQuizLinks.forEach(quizLink => {
-                    const quizLinkElement = createLink(quizLink.quiz, 'Quiz', '#');
-            
-                    quizLinkElement.addEventListener('click', event => {
-                        loadQuestionbyUnitandQuiz(quizLink.unit, quizLink.quiz);
-                    });
-            
-                    quizLinksContainer.append(quizLinkElement);
+                console.log(unitQuizLinks);
+                unitQuizLinks.forEach(unitNumber => {
+                    const quizLinkElement = createLink(unitNumber.quiz, 'Quiz', '#');
+                    quizLinkElement.setAttribute('class', "quizlink")
+                    quizLinkContainer.append(quizLinkElement);
                 });
-            
-                const linkKeyAndValue = {
-                    unitLink: unitLink,
-                    unitdiv: unitDiv,
-                    quizLinkContainer: quizLinksContainer
-                };
-
-                unitDivQuizLinkPairList.push(linkKeyAndValue);
-                toggleQuizLinks(linkKeyAndValue);
-                toggleUnitLinks(linkKeyAndValue);               
-                console.log(linkKeyAndValue);
-
-            
+                const menuElement = createMenuElement(unitNumber, unitQuizMap);
+                leftMenuParent.append(menuElement);
             });
+console.log(unitQuizMap);
         });
-}
-
+    }
 
 loadLinks();

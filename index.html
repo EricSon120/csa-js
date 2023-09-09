@@ -3,117 +3,88 @@
     <title>CSA QUIZ</title>
  
     <!-- external css file -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/menu.css"> 
 
     <!-- internal css -->
     <style>
     </style> 
 </head>
 <body>
-    <div id="unit-links-container"></div>
+    <div class="container">
+        <div class="wrapper">
+            <!--Top menu -->
+            <div class="sidebar">
+                <!--profile image & text-->
+                <!--menu item-->
+                <ul id="leftMenu">
+                    <li>
+                        <a href="#" class="active">
+                            <span class="icon"><i class="fas fa-home"></i></span>
+                            <span class="item">Home</span>
+                        </a>
+                    </li>
+                    <!-- <li>
+                        <a href="#unit1" id="unitLink1">
+                            <span class="icon"><i class="fas fa-file"></i></span>
+                            <span class="item">Unit 1</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#unit2" id="unitLink2">
+                            <span class="icon"><i class="fas fa-file"></i></span>
+                            <span class="item">Unit 2</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#unit3" id="unitLink3">
+                            <span class="icon"><i class="fas fa-file"></i></span>
+                            <span class="item">Unit 3</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#unit4" id="unitLink4">
+                            <span class="icon"><i class="fas fa-file"></i></span>
+                            <span class="item">Unit 4</span>
+                        </a>
+                    </li> -->
+                </ul>
 
-    <form action="">
-        <div id="menu">
-            <div id="quiz-link-container" style="display: none;"></div>
+            </div>
         </div>
+        <div class="content">
+            <div id="quizlinks">
+                <!-- <a class="quizlink" href="#">Quiz 1</a>
+                <a class="quizlink" href="#">Quiz 2</a>
+                <a class="quizlink" href="#">Quiz 3</a> -->
+            </div>
 
-        <div id="question-container" class="question-container">
-            <div id="question-num" class="question-num"></div>
-            <div id="main-question" class="main-question"></div>
-            <div id="question-code" class="question-code"></div>
-            <div id="quiz" class="quiz"></div>
-            <div id="choices" class="choices"></div>
-            <div id="explanation" class="explanation"></div>
+            <!-- 
+            <div id="unit-links-container"></div>
+            <div id="menu">
+                <div id="quiz-link-container" style="display: none;"></div>
+            </div>
+            <form action="">
+                <div id="question-container" class="question-container">
+                    <div id="question-num" class="question-num"></div>
+                    <div id="main-question" class="main-question"></div>
+                    <div id="question-code" class="question-code"></div>
+                    <div id="quiz" class="quiz"></div>
+                    <div id="choices" class="choices"></div>
+                    <div id="explanation" class="explanation"></div>
+                </div>
+                <div class="navigation-button" id="button-container"> 
+                    <button type="button" class="button" id="backBtn">Back</button>
+                    <button type="button" class="button" id="nextBtn">Next</button>
+                    <button type="button" class="button" id="submitBtn">Submit</button>
+                </div>
+            </form> 
+            -->
         </div>
-        <div class="navigation-button" id="button-container"> 
-            <button type="button" class="button" id="backBtn">Back</button>
-            <button type="button" class="button" id="nextBtn">Next</button>
-            <button type="button" class="button" id="submitBtn">Submit</button>
-        </div>
-    </form>
-    
+    </div>
+
     <!-- external javascript file -->
     <script src="js/main.js"></script> 
 </body>
-
-
-<body>
-
-    <div class="wrapper">
-        <!--Top menu -->
-        <div class="sidebar">
-           <ul>
-            <li>
-                <a href="#" class="active">
-                    <span class="icon"><i class="fas fa-home"></i></span>
-                    <span class="item">Unit 1</span>
-                </a>
-                <ul class="quiz-links">
-                    <li><a href="http://localhost:8080/question/unit/1/quiz/1">Quiz 1</a></li>
-                    <li><a href="#">Quiz 2</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="icon"><i class="fas fa-desktop"></i></span>
-                    <span class="item">Unit 2</span>
-                </a>
-                <ul class="quiz-links">
-                    <li><a href="#">Quiz 1</a></li>
-                    <li><a href="#">Quiz 2</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="icon"><i class="fas fa-user-friends"></i></span>
-                    <span class="item">Unit 3</span>
-                </a>
-                <ul class="quiz-links">
-                    <li><a href="#">Quiz 1</a></li>
-                    <li><a href="#">Quiz 2</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
-                    <span class="item">Unit 4</span>
-                </a>
-                <ul class="quiz-links">
-                    <li><a href="#">Quiz 1</a></li>
-                    <li><a href="#">Quiz 2</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="icon"><i class="fas fa-database"></i></span>
-                    <span class="item">Unit 5</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="icon"><i class="fas fa-chart-line"></i></span>
-                    <span class="item">Unit 6</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="icon"><i class="fas fa-user-shield"></i></span>
-                    <span class="item">Unit 7</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="icon"><i class="fas fa-cog"></i></span>
-                    <span class="item">Unit 8</span>
-                </a>
-            </li>
-        </ul>
-    </div>        </div>
-
-    </div>
-  <script>
-
-  </script>
-</body>
 </html>
-
