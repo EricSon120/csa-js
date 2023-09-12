@@ -52,3 +52,50 @@ json-server --watch ./stub/lesson/data.json
 //          loadQuestionByUUID(questionUUIDs[currentQuestion]);
 //   });
 // }
+
+
+
+
+
+ // const menu = document.getElementById('menu');
+
+            // const units = [];
+            // responseJson.forEach(item => {
+            //     if (!units.includes(item.unit)) {
+            //         units.push(item.unit);
+            //     }
+            // });
+
+            // units.forEach(unitNumber => {
+            //     const unitLink = createLink(unitNumber, 'Unit', '#');
+            //     const unitDiv = createDiv(unitNumber, 'main-menu-unit', false);
+            //     const quizLinksContainer = createDiv(unitNumber, 'quiz-container', false);
+
+            //     menu.append(unitLink, unitDiv, quizLinksContainer);
+            
+            //     const unitQuizLinks = responseJson.filter(item => item.unit === unitNumber);
+            
+            //     unitQuizLinks.forEach(quizLink => {
+            //         const quizLinkElement = createLink(quizLink.quiz, 'Quiz', '#');
+            
+            //         quizLinkElement.addEventListener('click', event => {
+            //             loadQuestionbyUnitandQuiz(quizLink.unit, quizLink.quiz);
+            //         });
+            
+            //         quizLinksContainer.append(quizLinkElement);
+            //     });
+            
+            //     const linkKeyAndValue = {
+            //         unitLink: unitLink,
+            //         unitdiv: unitDiv,
+            //         quizLinkContainer: quizLinksContainer
+            //     };
+
+            //     unitDivQuizLinkPairList.push(linkKeyAndValue);
+            //     toggleQuizLinks(linkKeyAndValue);
+            //     toggleUnitLinks(linkKeyAndValue);               
+            //     console.log(linkKeyAndValue);
+
+            
+        //     });
+        // ;

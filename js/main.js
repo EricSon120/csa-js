@@ -181,9 +181,18 @@ function toggleUnitLinks(linkKeyAndValue) {
 }
 
 function createLink(unitNumber, unitText, href) {
+    return createLink(unitNumber, unitText, href, null);
+}
+
+function createLink(unitNumber, unitText, href, cssClassValue) {
     const link = document.createElement('a');
     link.href = href;
     link.textContent = unitText + ' ' + unitNumber;
+
+    if (cssClassValue) {
+        link.setAttribute('class', cssClassValue);
+    }
+
     return link;
 }
   
@@ -203,19 +212,21 @@ function createDiv(unitNumber, className, isDisplay) {
 
 function addEventListeners(aElement, unitQuizMap) {
     aElement.addEventListener('click', (event) => {
-        const unitNumber = aElement.id.replace('unitLink', '');
-        const quizzes = unitQuizMap[unitNumber];
+        const unitNumber = aElement.id.substring('unitLink'.length);
+        const quizzes = unitQuizMap[unitNumber]; 
         quizLinkContainer.innerHTML = '';
 
         quizzes.forEach((quizNumber) => {
-            const quizLinkElement = createLink(quizNumber, 'Quiz', '#');
-            quizLinkElement.setAttribute('class', 'quizlink');
+            const quizLinkElement = createLink(quizNumber, 'Quiz', '#', 'quizlink');
+            quizLinkElement.addEventListener('click', () => {
+                loadQuestionbyUnitandQuiz(unitNumber, quizNumber);
+            });
             quizLinkContainer.append(quizLinkElement);
         });
         quizLinkContainer.style.display = 'block';
 
         const keys = Object.keys(unitQuizMap);
-        console.log(keys);
+       // console.log(keys);
         for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
             const unitDiv = document.getElementById('unitDiv' + key);
@@ -229,13 +240,6 @@ function addEventListeners(aElement, unitQuizMap) {
         }
     });
 }
-
-
-
-
-
-
-
 
 function createMenuElement(unitNumber, unitQuizMap) {
     const iElement = document.createElement('i');
@@ -261,6 +265,19 @@ function createMenuElement(unitNumber, unitQuizMap) {
     return liElement;
 }
 
+function createUnitQuizMap(unitQuizMap, unitNumber, quizNumber) {
+    if (!unitQuizMap[unitNumber]) {
+        unitQuizMap[unitNumber] = []; 
+    }
+    unitQuizMap[unitNumber].push(quizNumber);
+}
+
+function createUniqueNumbersArray(uniqueUnitNumbers, unitNumber) {
+    if (!uniqueUnitNumbers.includes(unitNumber)) {
+        uniqueUnitNumbers.push(unitNumber);
+    }
+}
+
 function loadLinks() {
     fetch(QUIZ_URL + "/list/unique")
         .then(response => response.json())
@@ -268,30 +285,21 @@ function loadLinks() {
             const uniqueUnitNumbers = [];
             const unitQuizMap = {};
             responseJson.forEach(element => {
-                const unitNumber = element.unit;
-                const quizNumber = element.quiz;
-                if (!unitQuizMap[unitNumber]) {
-                    unitQuizMap[unitNumber] = []; 
-                  }
-                  unitQuizMap[unitNumber].push(quizNumber); 
-
-                if (!uniqueUnitNumbers.includes(unitNumber)) {
-                    uniqueUnitNumbers.push(unitNumber);
-                }
+                createUnitQuizMap(unitQuizMap, element.unit, element.quiz);
+                createUniqueNumbersArray(uniqueUnitNumbers, element.unit);
             });
-            console.log(uniqueUnitNumbers);
+            //console.log(uniqueUnitNumbers);
             uniqueUnitNumbers.forEach(unitNumber => {
                 const unitQuizLinks = responseJson.filter(item => item.unit === unitNumber);
-                console.log(unitQuizLinks);
+                //console.log(unitQuizLinks);
                 unitQuizLinks.forEach(unitNumber => {
-                    const quizLinkElement = createLink(unitNumber.quiz, 'Quiz', '#');
-                    quizLinkElement.setAttribute('class', "quizlink")
+                    const quizLinkElement = createLink(unitNumber.quiz, 'Quiz', '#', "quizlink");
                     quizLinkContainer.append(quizLinkElement);
                 });
                 const menuElement = createMenuElement(unitNumber, unitQuizMap);
                 leftMenuParent.append(menuElement);
             });
-console.log(unitQuizMap);
+            //console.log(unitQuizMap);
         });
     }
 
