@@ -1,3 +1,11 @@
+import { 
+    createLink, 
+    createUnitQuizMap, 
+    createUniqueNumbersArray, 
+    displayExplanation,
+    createMenuElement
+} from "./util.js";
+
 const questioncontainerElement = document.getElementById('question-container');
 const questionNumElement = document.getElementById('question-num');
 const mainQuestionElement = document.getElementById('main-question');
@@ -16,7 +24,6 @@ const quizLinkContainer = document.getElementById('quizlinks')
 
 
 let questionArray = [];
-const unitDivQuizLinkPairList = [];
 const QUIZ_URL = 'http://localhost:8080/question';
 //const QUIZ_URL = 'https://csa-web.onrender.com/question';
 
@@ -27,14 +34,7 @@ const loadQuestionbyUnitandQuiz = (unit, quiz) => {
     .then(response => response.json())
     .then(responseJson => {
         questionArray = responseJson;
-        lastQuestionNum = questionArray.length - 1;
         updateQuestionPage(questionArray[0]);
-        // questionArray.forEach(question => {
-        //     console.log(question);
-        //     console.log("-------------");
-        //     updateQuestionPage(question); 
-        // });
-
         addButtonListener(0, questionArray.length-1);
         buttonElement.style.display = 'block';
         }
@@ -53,7 +53,6 @@ const updateButton = (currentQuestion, lastQuestionNum) => {
         nextBtn.style.display = 'block';
     }
 };
-
 
 const addButtonListener = (currentQuestion, lastQuestionNum) => {
     updateButton(currentQuestion, lastQuestionNum);
@@ -86,7 +85,7 @@ const addButtonListener = (currentQuestion, lastQuestionNum) => {
             return;
         }
         const correctAnswer = questionArray[currentQuestion].feedback[0].correct_answer;
-        displayExplanation(selectedAnswer, correctAnswer, currentQuestion); 
+        displayExplanation(questionArray, explanationElement, selectedAnswer, correctAnswer, currentQuestion); 
     })
 };
 
@@ -112,7 +111,6 @@ const updateQuestionPage = (responseJson) => {
         //cant use innerline because it will be overwritten everytime, only causing the last element to be displayed
         //therefore you need to make each choice have its own "div"
         const choiceDiv = document.createElement("div");
-        //choiceDiv.setAttribute("class", "main-question")
 
         //made a radiobutton to have the value of the answer choices
         const input = document.createElement("input");
@@ -129,178 +127,59 @@ const updateQuestionPage = (responseJson) => {
     questioncontainerElement.style.display = 'block';
 }
 
-function displayExplanation(selectedAnswer, correctAnswer, currentQuestion) {
-    const feedback = questionArray[currentQuestion].feedback[0].explanation;
-
-        if (selectedAnswer == correctAnswer) {
-            explanationElement.innerHTML = 'Correct <br>' + feedback;
-        } else {
-            explanationElement.innerHTML = 'Incorrect <br> ' + feedback;
-        }
-};
-
-// function toggleQuizLinks(unitRef, quizLinksContainer) {
-//     console.log(unitRef.style.display);
-//     if (unitRef.style.display === 'none') {
-//         console.log("testing if statement")
-//         unitRef.style.display = 'block';
-//         quizLinksContainer.style.display = 'block';
-//     } else {
-//         console.log("testing else statement")
-//         unitRef.style.display = 'none';
-//         quizLinksContainer.style.display = 'none';
-//     }
-// }
-
-
-function toggleQuizLinks(linkKeyAndValue) {
-    const unitdiv = linkKeyAndValue.unitdiv;
-    const quizLinkContainer = linkKeyAndValue.quizLinkContainer;
-
-    if (unitdiv.style.display === 'none') {
-        unitdiv.style.display = 'block';
-        quizLinkContainer.style.display = 'block';
-    } else {
-        unitdiv.style.display = 'none';
-        quizLinkContainer.style.display = 'none';
-    }
-}
-
-function toggleUnitLinks(linkKeyAndValue) {
-    linkKeyAndValue.unitLink.addEventListener('click', () => {
-      unitDivQuizLinkPairList.forEach(linkpair => {
-        if (linkpair.unitLink == linkKeyAndValue.unitLink) {
-          linkpair.unitdiv.style.display = 'block';
-          linkpair.quizLinkContainer.style.display = 'block';
-        } else {
-          linkpair.unitdiv.style.display = 'none';
-          linkpair.quizLinkContainer.style.display = 'none';
-        }
-      });
-    });
-}
-
-function createLink(unitNumber, unitText, href) {
-    return createLink(unitNumber, unitText, href, null);
-}
-
-function createLink(unitNumber, unitText, href, cssClassValue) {
-    const link = document.createElement('a');
-    link.href = href;
-    link.textContent = unitText + ' ' + unitNumber;
-
-    if (cssClassValue) {
-        link.setAttribute('class', cssClassValue);
-    }
-
-    return link;
-}
-  
-function createDiv(unitNumber, className, isDisplay) {
-    const unitDiv = document.createElement('div');
-    unitDiv.className = className;
-    unitDiv.id = className + unitNumber;
-
-    if (isDisplay) {
-        unitDiv.style.display = 'block';
-    } 
-    else {
-        unitDiv.style.display = 'none';
-    }
-    return unitDiv;
-}   
-
-function addEventListeners(aElement, unitQuizMap) {
-    aElement.addEventListener('click', (event) => {
-        const unitNumber = aElement.id.substring('unitLink'.length);
-        const quizzes = unitQuizMap[unitNumber]; 
-        quizLinkContainer.innerHTML = '';
-
-        quizzes.forEach((quizNumber) => {
-            const quizLinkElement = createLink(quizNumber, 'Quiz', '#', 'quizlink');
-            quizLinkElement.addEventListener('click', () => {
-                loadQuestionbyUnitandQuiz(unitNumber, quizNumber);
-            });
-            quizLinkContainer.append(quizLinkElement);
-        });
-        quizLinkContainer.style.display = 'block';
-
-        const keys = Object.keys(unitQuizMap);
-       // console.log(keys);
-        for (let i = 0; i < keys.length; i++) {
-            const key = keys[i];
-            const unitDiv = document.getElementById('unitDiv' + key);
-            if (unitDiv) {
-                if (key === unitNumber) {
-                    unitDiv.style.display = 'block';
-                } else {
-                    unitDiv.style.display = 'none';
-                }
-            }
-        }
-    });
-}
-
-function createMenuElement(unitNumber, unitQuizMap) {
-    const iElement = document.createElement('i');
-    iElement.setAttribute('class', "fas fa-file");
-    const iconSpanElement = document.createElement('span');
-    iconSpanElement.setAttribute('class', "icon");
-    iconSpanElement.append(iElement);
-
-    const itemSpanElement = document.createElement('span');
-    itemSpanElement.setAttribute('class', "item")
-    itemSpanElement.innerText = "Unit " + unitNumber;
-
-    const aElement = document.createElement('a');
-    aElement.setAttribute('id', "unitLink" + unitNumber);
-    aElement.setAttribute('href', "#unit" + unitNumber);
-    aElement.append(iconSpanElement);
-    aElement.append(itemSpanElement);
-    addEventListeners(aElement, unitQuizMap);
-
-    const liElement = document.createElement('li');
-    liElement.append(aElement);
-
-    return liElement;
-}
-
-function createUnitQuizMap(unitQuizMap, unitNumber, quizNumber) {
-    if (!unitQuizMap[unitNumber]) {
-        unitQuizMap[unitNumber] = []; 
-    }
-    unitQuizMap[unitNumber].push(quizNumber);
-}
-
-function createUniqueNumbersArray(uniqueUnitNumbers, unitNumber) {
-    if (!uniqueUnitNumbers.includes(unitNumber)) {
-        uniqueUnitNumbers.push(unitNumber);
-    }
-}
-
 function loadLinks() {
     fetch(QUIZ_URL + "/list/unique")
-        .then(response => response.json())
-        .then(responseJson => {
-            const uniqueUnitNumbers = [];
-            const unitQuizMap = {};
-            responseJson.forEach(element => {
-                createUnitQuizMap(unitQuizMap, element.unit, element.quiz);
-                createUniqueNumbersArray(uniqueUnitNumbers, element.unit);
-            });
-            //console.log(uniqueUnitNumbers);
-            uniqueUnitNumbers.forEach(unitNumber => {
-                const unitQuizLinks = responseJson.filter(item => item.unit === unitNumber);
-                //console.log(unitQuizLinks);
-                unitQuizLinks.forEach(unitNumber => {
-                    const quizLinkElement = createLink(unitNumber.quiz, 'Quiz', '#', "quizlink");
-                    quizLinkContainer.append(quizLinkElement);
-                });
-                const menuElement = createMenuElement(unitNumber, unitQuizMap);
-                leftMenuParent.append(menuElement);
-            });
-            //console.log(unitQuizMap);
+    .then(response => response.json())
+    .then(responseJson => {
+        const uniqueUnitNumbers = [];
+        const unitQuizMap = {};
+        responseJson.forEach(element => {
+            createUnitQuizMap(unitQuizMap, element.unit, element.quiz);
+            createUniqueNumbersArray(uniqueUnitNumbers, element.unit);
         });
-    }
+        //console.log(uniqueUnitNumbers);
+        uniqueUnitNumbers.forEach(unitNumber => {
+            const unitQuizLinks = responseJson.filter(item => item.unit === unitNumber);
+            //console.log(unitQuizLinks);
+            unitQuizLinks.forEach(unitNumber => {
+                const quizLinkElement = createLink(unitNumber.quiz, 'Quiz', '#', "quizlink");
+                quizLinkContainer.append(quizLinkElement);
+            });
+            const menuElement = createMenuElement(unitNumber, unitQuizMap, quizLinkContainer, loadQuestionbyUnitandQuiz);
+            leftMenuParent.append(menuElement);
+        });
+        //console.log(unitQuizMap);
+    });
+}
+//getName()
+//getName
+function greet(value, getName) {
+    console.log("Hello World " + getName(value));
 
-loadLinks();
+}
+
+// function getName(value) {
+//     return "name = " + value;
+// }
+
+function main() {
+    loadLinks();
+//     const getName = (value) => {
+//         return "name = " + value;
+//     }
+
+//     greet("Eric", getName)
+//     greet("Eric", getName())
+
+//     greet("Eric", (value) => {
+//         return "name = " + value;
+//     })
+
+
+//    var name = "eric";
+//    console.log(name)
+
+//    console.log("eric")
+}
+
+main();
