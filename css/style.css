@@ -6,6 +6,7 @@
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     margin-right: 5px;
+    flex: 1 ;
 
 }
 #button-container {
@@ -50,6 +51,8 @@
 .navigation-button {
     padding-left: 120px;
     display: flex;
+    flex-wrap: wrap;
+    
 }
 .main-menu1 {
     display: none;

@@ -24,8 +24,8 @@ const quizLinkContainer = document.getElementById('quizlinks')
 
 
 let questionArray = [];
-const QUIZ_URL = 'http://localhost:8080/question';
-//const QUIZ_URL = 'https://csa-web.onrender.com/question';
+//const QUIZ_URL = 'http://localhost:8080/question';
+const QUIZ_URL = 'https://csa-web.onrender.com/question';
 
 
 const loadQuestionbyUnitandQuiz = (unit, quiz) => {
