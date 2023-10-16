@@ -58,6 +58,8 @@ export function createMenuElement(unitNumber, unitQuizMap, quizLinkContainer, lo
     return liElement;
 }
 
+
+
 function addEventListeners(aElement, unitQuizMap, quizLinkContainer, loadQuestionbyUnitandQuiz) {
     aElement.addEventListener('click', (event) => {
         const unitNumber = aElement.id.substring('unitLink'.length);

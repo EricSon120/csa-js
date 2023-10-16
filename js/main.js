@@ -21,11 +21,9 @@ const buttonElement = document.getElementById('button-container');
 const leftMenuParent = document.getElementById('leftMenu');
 const quizLinkContainer = document.getElementById('quizlinks')
 
-
-
 let questionArray = [];
-//const QUIZ_URL = 'http://localhost:8080/question';
-const QUIZ_URL = 'https://csa-web.onrender.com/question';
+const QUIZ_URL = 'http://localhost:8080/question';
+//const QUIZ_URL = 'https://csa-web.onrender.com/question';
 
 
 const loadQuestionbyUnitandQuiz = (unit, quiz) => {
@@ -137,20 +135,24 @@ function loadLinks() {
             createUnitQuizMap(unitQuizMap, element.unit, element.quiz);
             createUniqueNumbersArray(uniqueUnitNumbers, element.unit);
         });
-        //console.log(uniqueUnitNumbers);
+
+        // Sort the unit numbers in ascending order
+        uniqueUnitNumbers.sort((a, b) => a - b);
+
         uniqueUnitNumbers.forEach(unitNumber => {
             const unitQuizLinks = responseJson.filter(item => item.unit === unitNumber);
-            //console.log(unitQuizLinks);
+            
             unitQuizLinks.forEach(unitNumber => {
                 const quizLinkElement = createLink(unitNumber.quiz, 'Quiz', '#', "quizlink");
                 quizLinkContainer.append(quizLinkElement);
             });
+
             const menuElement = createMenuElement(unitNumber, unitQuizMap, quizLinkContainer, loadQuestionbyUnitandQuiz);
             leftMenuParent.append(menuElement);
         });
-        //console.log(unitQuizMap);
     });
 }
+
 //getName()
 //getName
 function greet(value, getName) {
